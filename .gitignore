@@ -38,7 +38,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # IDE
-./idea
+/.idea
 *.sqlite3
 
 # Environments
