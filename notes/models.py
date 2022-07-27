@@ -5,3 +5,5 @@ from django.db import models
 # User model
 class GGITUser(AbstractUser):
     pass
+
+print("Hello World!")
