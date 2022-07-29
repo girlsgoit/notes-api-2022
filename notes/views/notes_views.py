@@ -11,7 +11,7 @@ from ..models import *
 @permission_classes([IsAuthenticated])
 
 def notes(request, pk):
-
+    
     if request.method == 'GET':
         return Response(get_note(request, pk))
     if request.method == 'PUT':
