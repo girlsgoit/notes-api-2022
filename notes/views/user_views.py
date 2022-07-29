@@ -23,7 +23,7 @@ def user_create(request):
 
 
 @api_view(['GET'])
-@permission_classes(['IsAuthenticated'])
+@permission_classes([IsAuthenticated])
 def user_me(request):
     user = request.user
     serializer = GGITUserSerializer(user)
@@ -32,11 +32,38 @@ def user_me(request):
 
 
 @api_view(['GET'])
-@permission_classes(['IsAuthenticated'])
+@permission_classes([IsAuthenticated])
 def users_list(request):
     users = GGITUser.objects.all()
     serializer = GGITUserSerializer(users, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def user_is_unique(request):
+    serializer = GGITUserSerializer(data = request.data)
+    if  GGITUser.objects.filter(username = request.data['username']).exists():
+      return Response(status = 400)
+    else:
+     return Response(status = 200)
+
+
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+def user_id(request, pk):
+    if (request.method == 'GET'):
+        users = get_object_or_404(GGITUser, pk = pk)
+        serializer = GGITUserSerializer(users)
+        return Response(serializer.data)
+    
+    elif(request.method == 'PUT'):
+        users = get_object_or_404(GGITUser, pk = pk)
+        serializer = GGITUserSerializer(instance = users, data = request.data)
+        if  serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
 
 
 
