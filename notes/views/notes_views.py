@@ -52,7 +52,9 @@ def notes(request):
         return Response(serializer.data)
     if request.method =='POST':
         notes= request.data
-        serializer = NoteSerializer(data=notes)
+        notes['user'] = request.user.id
+        serializer = NoteSerializer(data= request.data)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
