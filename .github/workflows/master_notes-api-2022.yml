@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'notes-api-2022'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0DCC59D8F1604669A563BF6A60BC3199 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7FAEE5B4865640598B1ADF32B7252314 }}
