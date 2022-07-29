@@ -24,7 +24,7 @@ class NoteSerializer(ModelSerializer):
 
     def create(self, data):
         note_elements = data.pop('note_elements')
-        note = Note.objects.create(data)
+        note = Note.objects.create(**data)
 
         for item in note_elements:
             NoteElement.objects.create(note = note, tag=item['tag'], content = item['content'])
