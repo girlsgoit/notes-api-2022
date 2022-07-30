@@ -24,7 +24,7 @@ from drf_yasg.utils import swagger_auto_schema
 @swagger_auto_schema(
     method = 'delete',
     operation_description = 'Delete user data',
-    responses = {200:{}},
+    responses = {200: {}},
 )
 
 @api_view(['GET', 'PUT', 'DELETE'])
