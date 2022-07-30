@@ -5,8 +5,28 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from ..serializers  import *
 from ..models import *
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 # Create your views here.
+
+@swagger_auto_schema(
+    method = 'get',
+    operation_description = 'Get the user data',
+    responses = {200: NoteSerializer()},
+)
+
+@swagger_auto_schema(
+    method = 'put',
+    operation_description = 'Update user data',
+    responses = {200: NoteSerializer()},
+)
+
+@swagger_auto_schema(
+    method = 'delete',
+    operation_description = 'Delete user data',
+    responses = {200:{}},
+)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
@@ -33,10 +53,10 @@ def put_note(request, pk):
     data['user'] = request.user.id
     serializer_2 = NoteSerializer(instance = note_put, data = request.data)
     if serializer_2.is_valid():
-            serializer_2.save()
-            return serializer_2.data
+        serializer_2.save()
+        return serializer_2.data
     else:
-            return serializer_2.errors
+        return serializer_2.errors
 
 
 def delete_note(request, pk):
