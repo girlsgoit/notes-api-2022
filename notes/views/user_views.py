@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from ..serializers import *
 from ..models import *
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 
@@ -38,6 +40,19 @@ def users_list(request):
     serializer = GGITUserSerializer(users, many=True)
     return Response(serializer.data)
 
+@swagger_auto_schema(
+    method = 'post',
+    operation_description = 'Check if a user is unique',
+    request_body = openapi.Schema(
+        type = openapi.TYPE_OBJECT,
+        properties = {
+          "username" : openapi.Schema( type = openapi.TYPE_STRING, description = 'unique username'),
+        },
+        required = ['username'],
+    ),
+    
+    responses = {201},
+)
 
 @api_view(['POST'])
 def user_is_unique(request):
@@ -46,6 +61,17 @@ def user_is_unique(request):
       return Response(status = 400)
     else:
      return Response(status = 200)
+
+@swagger_auto_schema (
+method = 'get',
+operation_description = 'Get a user',
+responses = {200: GGITUserSerializer()},
+)
+@swagger_auto_schema (
+method = 'put',
+operation_description = 'Modify a user',
+responses = {200: GGITUserSerializer()},
+)
 
 
 @api_view(['GET', 'PUT'])
