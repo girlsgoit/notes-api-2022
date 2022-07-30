@@ -1,3 +1,4 @@
+from http.client import responses
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -63,8 +64,30 @@ def delete_note(request, pk):
     note_delete.delete()
     return Response(status = 200)
 
+@swagger_auto_schema(
+    method='GET',
+    operation_description='Get all notes from a user.',
+    responses = {200:NoteSerializer()})
+
+@swagger_auto_schema(
+    method='POST',
+    operation_description='Post a note.',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties = {
+            "note_elements": openapi.Schema(
+                type=openapi.TYPE_OBJECT, properties={"tag": openapi.Schema(type=openapi.TYPE_STRING, description="tag"), "content": openapi.Schema(type=openapi.TYPE_STRING, description="content")
+                 
+        }, required=["tag", "content"],
+        )
+        },
+        required=["note_elements"],
+    ),
+     responses = {201: NoteSerializer()},  
+)    
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
+
 def notes(request):
     if request.method == 'GET':
         notes = Note.objects.filter(user=request.user).all()
