@@ -15,31 +15,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up Python version
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.9'
+    - name: Set up Python version
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.9'
 
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+    - name: Create and start virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
 
-      - name: Collect static
-        run: python manage.py collectstatic
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v2
-        with:
-          name: python-app
-          path: |
-            . 
-            !venv/
+    - name: Collect static
+      run: python manage.py collectstatic
+
+    - name: Upload artifact for deployment jobs
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-app
+        path: |
+          .
+          !venv/
 
   deploy:
     runs-on: ubuntu-latest
