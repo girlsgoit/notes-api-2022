@@ -87,27 +87,16 @@ def users_list(request):
     return Response(serializer.data)
 
 @swagger_auto_schema(
-    method = 'post',
-    operation_description = 'Check if a user is unique',
-    request_body = openapi.Schema(
-        type = openapi.TYPE_OBJECT,
-        properties = {
-          "username" : openapi.Schema( type = openapi.TYPE_STRING, description = 'unique username'),
-        },
-        required = ['username'],
-    ),
-    
+    method = 'GET',
+    operation_description = 'Check if a user is unique. Returns false if the user exists.',  
     responses = {200:{}},
 )
 
 
-@api_view(['POST'])
-def user_is_unique(request):
-    serializer = GGITUserSerializer(data = request.data)
-    if  GGITUser.objects.filter(username = request.data['username']).exists():
-      return Response(status = 400)
-    else:
-     return Response(status = 200)
+@api_view(['GET'])
+def user_is_unique(request,username):
+    # serializer = GGITUserSerializer(data = request.data)
+    return  Response(not GGITUser.objects.filter(username =username).exists())
 
 @swagger_auto_schema (
 method = 'get',
