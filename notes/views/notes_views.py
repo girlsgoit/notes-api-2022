@@ -66,7 +66,7 @@ def delete_note(request, pk):
 
 @swagger_auto_schema(
     method='GET',
-    operation_description='Get a note.',
+    operation_description='Get all notes from a user.',
     responses = {200:NoteSerializer()})
 
 @swagger_auto_schema(
@@ -75,16 +75,15 @@ def delete_note(request, pk):
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties = {
-            "notes": openapi.Schema(
-                type=openapi.TYPE_STRING, description="notes"
-                 ),
-            "note_details": openapi.Schema(
-                type=openapi.TYPE_STRING, description="note details"
-            ),
-        }
-        responses={200: note_serializer.NoteSerializer(),}     
-
-    )
+            "note_elements": openapi.Schema(
+                type=openapi.TYPE_OBJECT, properties={"tag": openapi.Schema(type=openapi.TYPE_STRING, description="tag"), "content": openapi.Schema(type=openapi.TYPE_STRING, description="content")
+                 
+        }, required=["tag", "content"],
+        )
+        },
+        required=["note_elements"],
+    ),
+     responses = {201: NoteSerializer()},  
 )    
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
